@@ -1,10 +1,7 @@
 package co.tjcelaya.manta.downloader;
 
 import com.joyent.manta.client.MantaClient;
-import com.joyent.manta.config.ChainedConfigContext;
-import com.joyent.manta.config.DefaultsConfigContext;
-import com.joyent.manta.config.EnvVarConfigContext;
-import com.joyent.manta.config.StandardConfigContext;
+import com.joyent.manta.config.*;
 import com.joyent.manta.exception.MantaClientEncryptionCiphertextAuthenticationException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -21,15 +18,20 @@ public class App {
     private static final String OPT_PATH = "p";
     private static final String OPT_ENCRYPTION_KEY_CONTENT = "k";
     private static final String OPT_ENCRYPTION_KEY_ID = "i";
+    private static final String OPT_ERROR_ONLY = "e";
     private static MantaClient client;
+    private static boolean successOutput = true;
 
     public static void main(String[] args) throws Exception {
         final Options opts = new Options()
-                .addOption("i", true, "encryption key id")
-                .addOption("k", true, "encryption key (base64)")
-                .addOption("p", true, "path to object");
+                .addOption(OPT_ENCRYPTION_KEY_ID, true, "encryption key id")
+                .addOption(OPT_ENCRYPTION_KEY_CONTENT, true, "encryption key (base64)")
+                .addOption(OPT_PATH, true, "path to object")
+                .addOption(OPT_ERROR_ONLY, false, "whether to omit successful files from output");
 
         final CommandLine invocation = new DefaultParser().parse(opts, args);
+
+        successOutput = !invocation.hasOption(OPT_ERROR_ONLY);
 
         client = new MantaClient(
                 new ChainedConfigContext(
@@ -71,7 +73,9 @@ public class App {
             InputStream obj = client.getAsInputStream(path);
             IOUtils.copy(obj, new NullOutputStream());
             obj.close();
-            System.out.println(path);
+            if (successOutput) {
+                System.out.println(path);
+            }
             return false;
         } catch (MantaClientEncryptionCiphertextAuthenticationException mcecae) {
             System.err.println(path);

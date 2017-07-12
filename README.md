@@ -10,6 +10,7 @@
     - paths can be specified:
         - `-p` paths to check (newline-delimited)
         - stdin e.g. `cat list_of_paths | java -jar downloader.jar -i enc_key_id -k enc_key_content`
+    - optional: `-e` omit successful files from output
 - outputs
-    - problem files to stderr
-    - valid files to stdout
+    - invalid files to stderr
+    - valid files to stdout (unless `-e` is passed)

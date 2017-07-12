@@ -1,0 +1,15 @@
+# Usage
+- set environment
+    - `MANTA_URL`
+    - `MANTA_USER`
+    - `MANTA_KEY_PATH`
+    - `MANTA_KEY_ID`
+- inputs
+    - `-k` encryption key content (base64) 
+    - `-i` encryption key id
+    - paths can be specified:
+        - `-p` paths to check (newline-delimited)
+        - stdin e.g. `cat list_of_paths | java -jar downloader.jar -i enc_key_id -k enc_key_content`
+- outputs
+    - problem files to stderr
+    - valid files to stdout

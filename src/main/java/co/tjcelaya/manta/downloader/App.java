@@ -1,7 +1,10 @@
 package co.tjcelaya.manta.downloader;
 
 import com.joyent.manta.client.MantaClient;
-import com.joyent.manta.config.*;
+import com.joyent.manta.config.ChainedConfigContext;
+import com.joyent.manta.config.DefaultsConfigContext;
+import com.joyent.manta.config.EnvVarConfigContext;
+import com.joyent.manta.config.StandardConfigContext;
 import com.joyent.manta.exception.MantaClientEncryptionCiphertextAuthenticationException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -10,7 +13,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.NullOutputStream;
 
 import java.io.InputStream;
-import java.util.Base64;
 import java.util.Scanner;
 
 public class App {
@@ -42,7 +44,7 @@ public class App {
                                 .setEncryptionAlgorithm("AES256/CTR/NoPadding")
                                 .setEncryptionKeyId(invocation.getOptionValue(OPT_ENCRYPTION_KEY_ID))
                                 .setEncryptionPrivateKeyBytes(
-                                        Base64.getDecoder().decode(invocation.getOptionValue(OPT_ENCRYPTION_KEY_CONTENT)))));
+                                        invocation.getOptionValue(OPT_ENCRYPTION_KEY_CONTENT).getBytes())));
 
         final Scanner input;
         if (invocation.hasOption(OPT_PATH)) {

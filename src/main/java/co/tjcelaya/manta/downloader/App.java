@@ -27,9 +27,9 @@ public class App {
     public static void main(String[] args) throws Exception {
         final Options opts = new Options()
                 .addOption(OPT_ENCRYPTION_KEY_ID, true, "encryption key id")
-                .addOption(OPT_ENCRYPTION_KEY_CONTENT, true, "encryption key (base64)")
+                .addOption(OPT_ENCRYPTION_KEY_CONTENT, true, "encryption key content")
                 .addOption(OPT_PATH, true, "path to object")
-                .addOption(OPT_ERROR_ONLY, false, "whether to omit successful files from output");
+                .addOption(OPT_ERROR_ONLY, false, "whether to only output failures");
 
         final CommandLine invocation = new DefaultParser().parse(opts, args);
 
@@ -83,6 +83,7 @@ public class App {
             System.err.println(path);
             return false;
         } catch (Exception e) {
+            // TODO: limit number of retries?
             e.printStackTrace(System.err);
             return true;
         }

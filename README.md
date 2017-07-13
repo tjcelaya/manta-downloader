@@ -5,7 +5,7 @@
     - `MANTA_KEY_PATH`
     - `MANTA_KEY_ID`
 - inputs
-    - `-k` encryption key content (base64) 
+    - `-k` encryption key content
     - `-i` encryption key id
     - paths can be specified:
         - `-p` paths to check (newline-delimited)
